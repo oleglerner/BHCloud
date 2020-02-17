@@ -8,6 +8,7 @@ import ComputerNodeData from './Tabs/ComputerNodeData';
 import DomainNodeData from './Tabs/DomainNodeData';
 import GpoNodeData from './Tabs/GPONodeData';
 import OuNodeData from './Tabs/OUNodeData';
+import CloudNICNodeData from './Tabs/CloudNICNodeData';
 import { Tabs, Tab } from 'react-bootstrap';
 import { openSync, readSync, closeSync } from 'fs';
 import imageType from 'image-type';
@@ -24,6 +25,7 @@ class TabContainer extends Component {
             domainVisible: false,
             gpoVisible: false,
             ouVisible: false,
+            cloudNICVisible: false,
             selected: 1,
         };
     }
@@ -41,6 +43,8 @@ class TabContainer extends Component {
             this._ouNodeClicked();
         } else if (type === 'GPO') {
             this._gpoNodeClicked();
+        } else if (type = 'CloudNIC') {
+            this.__cloudNICNodeClicked();
         }
     }
 
@@ -74,6 +78,7 @@ class TabContainer extends Component {
             domainVisible: false,
             gpoVisible: false,
             ouVisible: false,
+            cloudNICVisible: false,
         });
         this.setState({ selected: 2 });
     }
@@ -86,6 +91,7 @@ class TabContainer extends Component {
             domainVisible: false,
             gpoVisible: false,
             ouVisible: false,
+            cloudNICVisible: false,
         });
         this.setState({ selected: 2 });
     }
@@ -98,6 +104,7 @@ class TabContainer extends Component {
             domainVisible: false,
             gpoVisible: false,
             ouVisible: false,
+            cloudNICVisible: false,
         });
         this.setState({ selected: 2 });
     }
@@ -110,6 +117,7 @@ class TabContainer extends Component {
             domainVisible: true,
             gpoVisible: false,
             ouVisible: false,
+            cloudNICVisible: false,
         });
         this.setState({ selected: 2 });
     }
@@ -122,6 +130,7 @@ class TabContainer extends Component {
             domainVisible: false,
             gpoVisible: true,
             ouVisible: false,
+            cloudNICVisible: false,
         });
         this.setState({ selected: 2 });
     }
@@ -134,6 +143,20 @@ class TabContainer extends Component {
             domainVisible: false,
             gpoVisible: false,
             ouVisible: true,
+            cloudNICVisible: false,
+        });
+        this.setState({ selected: 2 });
+    }
+
+    __cloudNICNodeClicked() {
+        this.setState({
+            userVisible: false,
+            computerVisible: false,
+            groupVisible: false,
+            domainVisible: false,
+            gpoVisible: false,
+            ouVisible: false,
+            cloudNICVisible: true,
         });
         this.setState({ selected: 2 });
     }
@@ -174,6 +197,7 @@ class TabContainer extends Component {
                         <DomainNodeData visible={this.state.domainVisible} />
                         <GpoNodeData visible={this.state.gpoVisible} />
                         <OuNodeData visible={this.state.ouVisible} />
+                        <CloudNICNodeData visible={this.state.cloudNICVisible} />
                     </Tab>
 
                     <Tab eventKey={3} title='Queries'>

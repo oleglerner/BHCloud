@@ -1,6 +1,6 @@
 import { groupBy } from 'lodash/collection';
 
-var labels = ['OU', 'GPO', 'User', 'Computer', 'Group', 'Domain'];
+var labels = ['OU', 'GPO', 'User', 'Computer', 'Group', 'Domain', 'CloudNIC'];
 
 export function generateUniqueId(sigmaInstance, isNode) {
     var i = Math.floor(Math.random() * (100000 - 10 + 1)) + 10;
@@ -230,12 +230,16 @@ export async function addConstraints() {
     await session
         .run('CREATE CONSTRAINT ON (c:OU) ASSERT c.objectid IS UNIQUE')
         .catch(_ => {});
+    await session
+        .run('CREATE CONSTRAINT ON (c:CloudNIC) ASSERT c.objectid IS UNIQUE')
+        .catch(_ => {});
     await session.run('CREATE INDEX ON :User(name)').catch(_ => {});
     await session.run('CREATE INDEX ON :Group(name)').catch(_ => {});
     await session.run('CREATE INDEX ON :Computer(name)').catch(_ => {});
     await session.run('CREATE INDEX ON :GPO(name)').catch(_ => {});
     await session.run('CREATE INDEX ON :Domain(name)').catch(_ => {});
     await session.run('CREATE INDEX ON :OU(name)').catch(_ => {});
+    await session.run('CREATE INDEX ON :CloudNIC(name)').catch(_ => {});
     session.close();
 
     emitter.emit('hideDBClearModal');

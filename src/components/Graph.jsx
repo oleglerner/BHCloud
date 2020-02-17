@@ -994,6 +994,9 @@ class GraphContainer extends Component {
             case 'OU':
                 node.type_ou = true;
                 break;
+            case 'CloudNIC':
+                node.type_cloudnic = true;
+                break;
         }
 
         return node;

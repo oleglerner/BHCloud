@@ -32,6 +32,9 @@ const SearchRow = (item, props) => {
         case 'OU':
             icon.className = 'fa fa-sitemap';
             break;
+        case 'CloudNIC':
+            icon.className = 'fa fa-wifi';
+            break;
     }
 
     let name = item.name || item.objectid;

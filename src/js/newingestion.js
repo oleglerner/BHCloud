@@ -1,5 +1,22 @@
 import { groupBy } from 'lodash/collection';
 
+export function buildCloudNICJson(chunk) {
+    let queries = {};
+    queries.properties = {};
+    queries.properties.statement = 
+        'UNWIND $props AS prop MERGE (n:CloudNIC {objectid: prop.source}) SET n += prop.map';
+    queries.properties.props = [];
+
+    for(let nic of chunk){
+        console.log(nic);
+        let properties = {name: nic.name, macAddress: nic.macAddress};
+        let identifier = nic.id;
+        queries.properties.props.push({ source: identifier, map: properties });
+    }
+
+    return queries;
+}
+
 export function buildGroupJsonNew(chunk) {
     let queries = {};
     queries.properties = {};

@@ -225,6 +225,7 @@ class MenuContainer extends Component {
             'computers',
             'users',
             'domains',
+            'CloudNICs'
         ];
         let count;
 
@@ -342,7 +343,8 @@ class MenuContainer extends Component {
                 users: NewIngestion.buildUserJsonNew,
                 domains: NewIngestion.buildDomainJsonNew,
                 ous: NewIngestion.buildOuJsonNew,
-                gpos: NewIngestion.buildGpoJsonNew
+                gpos: NewIngestion.buildGpoJsonNew,
+                CloudNICs: NewIngestion.buildCloudNICJson,
             };
         }
 

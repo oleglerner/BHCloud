@@ -149,6 +149,12 @@ global.appStore = {
                 scale: 1.25,
                 color: '#7F72FD',
             },
+            CloudNIC: {
+                font: "'Font Awesome 5 Free'",
+                content: '\uF1EB',
+                scale: 1.25,
+                color: '#7F72FD',
+            },
             Unknown: {
                 font: "'Font Awesome 5 Free'",
                 content: '\uF128',

@@ -12,6 +12,7 @@ export default class DatabaseDataDisplay extends Component {
             num_relationships: 'Refreshing',
             num_sessions: 'Refreshing',
             num_acls: 'Refreshing',
+            num_cloudnics: 'Refreshing',
             interval: null,
         };
     }
@@ -63,6 +64,7 @@ export default class DatabaseDataDisplay extends Component {
         var s4 = driver.session();
         var s5 = driver.session();
         var s6 = driver.session();
+        var s7 = driver.session();
 
         s1.run(
             "MATCH (n:User) WHERE NOT n.name ENDS WITH '$' RETURN count(n)"
@@ -109,6 +111,13 @@ export default class DatabaseDataDisplay extends Component {
             });
             s5.close();
         });
+
+        s7.run('MATCH (n:CloudNIC) RETURN count(n)').then(result => {
+            this.setState({
+                num_cloudnics: result.records[0]._fields[0].toLocaleString(),
+            });
+            s7.close();
+        });
     }
 
     render() {
@@ -132,6 +141,8 @@ export default class DatabaseDataDisplay extends Component {
                     <dd>{this.state.num_acls}</dd>
                     <dt>Relationships</dt>
                     <dd>{this.state.num_relationships}</dd>
+                    <dt>Cloud NICs</dt>
+                    <dd>{this.state.num_cloudnics}</dd>
                 </dl>
 
                 <div className='text-center'>
