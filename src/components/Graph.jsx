@@ -997,6 +997,18 @@ class GraphContainer extends Component {
             case 'CloudNIC':
                 node.type_cloudnic = true;
                 break;
+            case 'CloudVM':
+                node.type_cloudvm = true;
+                break;
+            case 'CloudHD':
+                node.type_cloudhd = true;
+                break;
+            case 'CloudKeyVault':
+                node.type_cloudkeyvault = true;
+                break;
+            case 'CloudRole':
+                node.type_cloudrole = true;
+                break;
         }
 
         return node;

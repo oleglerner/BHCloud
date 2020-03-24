@@ -35,6 +35,39 @@ const SearchRow = (item, props) => {
         case 'CloudNIC':
             icon.className = 'fa fa-wifi';
             break;
+        case 'CloudNSG':
+            icon.className = 'fa fa-arrows-alt';
+            break;
+        case 'IP':
+            icon.className = 'fa fa-cloud';
+            break;
+        case 'CloudVM':
+            icon.className = 'fa fa-cube';
+            break;
+        case 'CloudHD':
+            icon.className = 'fa fa-hdd';
+            break;
+        case 'CloudKeyVault':
+            icon.className = 'fa fa-key';
+            break;
+        case 'CloudMI':
+            icon.className = 'fa fa-male';
+            break;
+        case 'CloudSubscription':
+            icon.className = 'fa fa-certificate';
+            break;
+        case 'CloudRG':
+            icon.className = 'fa fa-database';
+            break;
+        case 'CloudRole':
+            icon.className = 'fa fa-user-secret';
+            break;
+        case 'CloudApp':
+            icon.className = 'fa fa-cog';
+            break;
+        case 'CloudSP':
+            icon.className = 'fa fa-smile-o';
+            break;
     }
 
     let name = item.name || item.objectid;

@@ -1,5 +1,18 @@
 import React, { Component } from 'react';
 
+const dataDisplay = [
+    {session: null, query: 'MATCH (n:CloudNIC) RETURN count(n)', state: {num_cloudnics: 0}},
+    {session: null, query: 'MATCH (n:CloudVM) RETURN count(n)', state: {num_cloudvms: 0}},
+    {session: null, query: 'MATCH (n:CloudHD) RETURN count(n)', state: {num_cloudhds: 0}},
+    {session: null, query: 'MATCH (n:CloudKeyVault) RETURN count(n)', state: {num_keyvaults: 0}},
+    {session: null, query: 'MATCH (n:CloudMI) RETURN count(n)', state: {num_mis: 0}},
+    {session: null, query: 'MATCH (n:CloudNSG) RETURN count(n)', state: {num_nsgs: 0}},
+    {session: null, query: 'MATCH (n:CloudRole) RETURN count(n)', state: {num_roles: 0}},
+    {session: null, query: 'MATCH (n:CloudRG) RETURN count(n)', state: {num_rgs: 0}},
+    {session: null, query: 'MATCH (n:CloudSubscription) RETURN count(n)', state: {num_subscriptions: 0}},
+    {session: null, query: 'MATCH ()-[r {isrbac: true}]->() RETURN count(r)', state: {num_rbacs: 0}}
+]
+
 export default class DatabaseDataDisplay extends Component {
     constructor() {
         super();
@@ -13,6 +26,15 @@ export default class DatabaseDataDisplay extends Component {
             num_sessions: 'Refreshing',
             num_acls: 'Refreshing',
             num_cloudnics: 'Refreshing',
+            num_cloudvms: 'Refreshing',
+            num_cloudhds: 'Refreshing',
+            num_keyvaults: 'Refreshing',
+            num_mis: 'Refreshing',
+            num_nsgs: 'Refreshing',
+            num_roles: 'Refreshing',
+            num_subscriptions: 'Refreshing',
+            num_rgs: 'Refreshing',
+            num_rbacs: 'Refreshing',
             interval: null,
         };
     }
@@ -64,7 +86,15 @@ export default class DatabaseDataDisplay extends Component {
         var s4 = driver.session();
         var s5 = driver.session();
         var s6 = driver.session();
-        var s7 = driver.session();
+
+        dataDisplay.forEach(element => {
+            element.session = driver.session();
+            element.session.run(element.query).then(result => {
+                element.state[Object.keys(element.state)[0]] = result.records[0]._fields[0].toLocaleString();
+                this.setState(element.state);
+                element.session.close();
+            })
+        });
 
         s1.run(
             "MATCH (n:User) WHERE NOT n.name ENDS WITH '$' RETURN count(n)"
@@ -111,13 +141,6 @@ export default class DatabaseDataDisplay extends Component {
             });
             s5.close();
         });
-
-        s7.run('MATCH (n:CloudNIC) RETURN count(n)').then(result => {
-            this.setState({
-                num_cloudnics: result.records[0]._fields[0].toLocaleString(),
-            });
-            s7.close();
-        });
     }
 
     render() {
@@ -143,6 +166,24 @@ export default class DatabaseDataDisplay extends Component {
                     <dd>{this.state.num_relationships}</dd>
                     <dt>Cloud NICs</dt>
                     <dd>{this.state.num_cloudnics}</dd>
+                    <dt>Cloud VMs</dt>
+                    <dd>{this.state.num_cloudvms}</dd>
+                    <dt>Cloud HDs</dt>
+                    <dd>{this.state.num_cloudhds}</dd>
+                    <dt>Cloud KeyVault</dt>
+                    <dd>{this.state.num_keyvaults}</dd>
+                    <dt>Cloud Managed Identities</dt>
+                    <dd>{this.state.num_mis}</dd>
+                    <dt>Cloud NSGs</dt>
+                    <dd>{this.state.num_nsgs}</dd>
+                    <dt>Cloud Roles</dt>
+                    <dd>{this.state.num_roles}</dd>
+                    <dt>Cloud Resource Groups</dt>
+                    <dd>{this.state.num_rgs}</dd>
+                    <dt>Cloud Subscriptions</dt>
+                    <dd>{this.state.num_subscriptions}</dd>
+                    <dt>Cloud RBACs</dt>
+                    <dd>{this.state.num_rbacs}</dd>
                 </dl>
 
                 <div className='text-center'>

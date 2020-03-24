@@ -194,6 +194,54 @@
                     "endNode": "{}"
                 }
             ]
+        },
+        {
+            "name": "Cloud: Find path to Key Vaults",
+            "queryList": [
+                {
+                    "final": false,
+                    "title": "Select a Domain",
+                    "query": "MATCH (n:CloudKeyVault) RETURN n.name ORDER BY n.name DESC"
+                },
+                {
+                    "final": true,
+                    "query": "MATCH p=(n:User)-[r:Hosts|HasPermissionsOf|Contributor|Owner|Reader|SecurityReader|MemberOf*1..]->(m:CloudKeyVault) WHERE m.name=$result AND NOT m = n RETURN p",
+                    "allowCollapse": true,
+                    "endNode": "{}"
+                }
+            ]
+        },
+        {
+            "name": "Cloud: Shortest Paths to High Value Targets",
+            "queryList": [
+                {
+                    "final": false,
+                    "title": "Select a Domain",
+                    "query": "MATCH (n:Domain) RETURN n.name ORDER BY n.name DESC"
+                },
+                {
+                    "final": true,
+                    "query": "MATCH (n),(m),p=shortestPath((n)-[*]->(m)) WHERE m.domain=$result AND m.highvalue=true AND NOT m = n RETURN p",
+                    "allowCollapse": true,
+                    "endNode": "{}"
+                }
+            ]
+        },
+        {
+            "name": "Cloud: Show inbound rules to VM",
+            "queryList": [
+                {
+                    "final": false,
+                    "title": "Select a VM",
+                    "query": "MATCH (n:CloudVM) RETURN n.name ORDER BY n.name DESC"
+                },
+                {
+                    "final": true,
+                    "query": "MATCH (n:IP),(m:CloudVM) with n,m match p=shortestpath((n)-[*]->(m)) WHERE m.name=$result RETURN p",
+                    "allowCollapse": true,
+                    "endNode": "{}"
+                }
+            ]
         }
     ]
 }

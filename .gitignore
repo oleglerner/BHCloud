@@ -1,6 +1,7 @@
 node_modules/*
 Bloodhound-*
 dist/
+Mockups/
 npm-debug.log
 *.bin
 *.csv

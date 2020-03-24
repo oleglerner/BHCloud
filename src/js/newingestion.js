@@ -1,20 +1,20 @@
 import { groupBy } from 'lodash/collection';
 
-export function buildCloudNICJson(chunk) {
-    let queries = {};
-    queries.properties = {};
-    queries.properties.statement = 
-        'UNWIND $props AS prop MERGE (n:CloudNIC {objectid: prop.source}) SET n += prop.map';
-    queries.properties.props = [];
 
-    for(let nic of chunk){
-        console.log(nic);
-        let properties = {name: nic.name, macAddress: nic.macAddress};
-        let identifier = nic.id;
-        queries.properties.props.push({ source: identifier, map: properties });
+function cloudGroupHelper(group) {
+    if (group.Properties === undefined) {
+        group.Properties = {
+            name: group.displayName,
+            description: group.description
+        }
     }
-
-    return queries;
+    if (group.ObjectIdentifier === undefined) {
+        group.ObjectIdentifier = group.objectId;
+        if (group.onPremisesSecurityIdentifier !== null) {
+            group.ObjectIdentifier = group.onPremisesSecurityIdentifier;
+        }
+    }
+    if (group.Aces === undefined) { group.Aces = [] }
 }
 
 export function buildGroupJsonNew(chunk) {
@@ -25,6 +25,7 @@ export function buildGroupJsonNew(chunk) {
     queries.properties.props = [];
 
     for (let group of chunk) {
+        cloudGroupHelper(group);
         let properties = group.Properties;
         let identifier = group.ObjectIdentifier;
         let aces = group.Aces;
@@ -152,6 +153,22 @@ export function buildComputerJsonNew(chunk) {
     return queries;
 }
 
+function cloudUserHelper(user) {
+    if (user.Properties === undefined) {
+        user.Properties = { email: user.mail, name: user.userPrincipalName };
+    }
+    if (user.ObjectIdentifier === undefined) {
+        user.ObjectIdentifier = user.objectId;
+        if (user.onPremisesSecurityIdentifier !== null) {
+            user.ObjectIdentifier = user.onPremisesSecurityIdentifier;
+        }
+    }
+    if (user.PrimaryGroupSid === undefined) { user.PrimaryGroupSid = null };
+    if (user.AllowedToDelegate === undefined) { user.AllowedToDelegate = [] };
+    if (user.SPNTargets === undefined) { user.SPNTargets = [] };
+    if (user.Aces === undefined) { user.Aces = [] };
+}
+
 export function buildUserJsonNew(chunk) {
     let queries = {};
     queries.properties = {
@@ -161,6 +178,7 @@ export function buildUserJsonNew(chunk) {
     };
 
     for (let user of chunk) {
+        cloudUserHelper(user);
         let properties = user.Properties;
         let identifier = user.ObjectIdentifier;
         let primaryGroup = user.PrimaryGroupSid;
@@ -549,7 +567,7 @@ const baseInsertStatement =
  * @param {*} formatProps - SourceLabel, TargetLabel, EdgeType, Edge Props
  * @param {*} queryProp - array of query props
  */
-function insertNew(queries, formatProps, queryProps) {
+export function insertNew(queries, formatProps, queryProps) {
     if (formatProps.length < 4) {
         throw new NotEnoughArgumentsException();
     }

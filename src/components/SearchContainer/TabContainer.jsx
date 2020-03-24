@@ -9,10 +9,34 @@ import DomainNodeData from './Tabs/DomainNodeData';
 import GpoNodeData from './Tabs/GPONodeData';
 import OuNodeData from './Tabs/OUNodeData';
 import CloudNICNodeData from './Tabs/CloudNICNodeData';
+import CloudVMNodeData from './Tabs/CloudVMNodeData';
+import CloudHDNodeData from './Tabs/CloudHDNodeData';
+import CloudKeyVaultNodeData from './Tabs/CloudKeyVaultNodeData';
+import CloudNSGNodeData from './Tabs/CloudNSGNodeData';
+import CloudRoleNodeData from './Tabs/CloudRoleNodeData';
 import { Tabs, Tab } from 'react-bootstrap';
 import { openSync, readSync, closeSync } from 'fs';
 import imageType from 'image-type';
 import { withAlert } from 'react-alert';
+import CloudRGNodeData from './Tabs/CloudRGNodeData';
+import CloudSubscriptionNodeData from './Tabs/CloudSubscriptionNodeData';
+import CloudSPNodeData from './Tabs/CloudSPNodeData';
+import CloudAppNodeData from './Tabs/CloudAppNodeData';
+
+const map = {
+    'User': {userVisible: true}, 
+    'Computer': {computerVisible: true},
+    'Group': {groupVisible: true},
+    'Domain': {domainVisible: true},
+    'OU': {ouVisible: true},
+    'GPO': {gpoVisible: true},
+    'CloudNIC': {cloudNICVisible: true},
+    'CloudVM': {cloudVMVisible: true},
+    'CloudHD': {cloudHDVisible: true},
+    'CloudKeyVault': {cloudKeyVaultVisible: true},
+    'CloudNSG': {cloudNSGVisible: true},
+    'CloudRole': {cloudRoleVisible: true},
+}
 
 class TabContainer extends Component {
     constructor(props) {
@@ -26,11 +50,37 @@ class TabContainer extends Component {
             gpoVisible: false,
             ouVisible: false,
             cloudNICVisible: false,
+            cloudVMVisible: false,
+            cloudHDVisible: false,
+            cloudKeyVaultVisible: false,
+            cloudNSGVisible: false,
+            cloudRoleVisible: false,
             selected: 1,
         };
     }
-
+    setAllFalse(){
+        // False on all
+        this.setState({
+            userVisible: false,
+            computerVisible: false,
+            groupVisible: false,
+            domainVisible: false,
+            gpoVisible: false,
+            ouVisible: false,
+            cloudNICVisible: false,
+            cloudVMVisible: false,
+            cloudHDVisible: false,
+            cloudKeyVaultVisible: false,
+            cloudNSGVisible: false,
+            cloudRoleVisible: false,
+            selected: 1,
+        })
+    }
     nodeClickHandler(type) {
+        this.setAllFalse();
+        // Set true on clicked node
+        this.setState(map[type]);
+
         if (type === 'User') {
             this._userNodeClicked();
         } else if (type === 'Group') {
@@ -43,9 +93,8 @@ class TabContainer extends Component {
             this._ouNodeClicked();
         } else if (type === 'GPO') {
             this._gpoNodeClicked();
-        } else if (type = 'CloudNIC') {
-            this.__cloudNICNodeClicked();
-        }
+        } 
+        this.setState({ selected: 2 });
     }
 
     componentDidMount() {
@@ -148,18 +197,6 @@ class TabContainer extends Component {
         this.setState({ selected: 2 });
     }
 
-    __cloudNICNodeClicked() {
-        this.setState({
-            userVisible: false,
-            computerVisible: false,
-            groupVisible: false,
-            domainVisible: false,
-            gpoVisible: false,
-            ouVisible: false,
-            cloudNICVisible: true,
-        });
-        this.setState({ selected: 2 });
-    }
 
     _handleSelect(index, last) {
         this.setState({ selected: index });
@@ -198,6 +235,16 @@ class TabContainer extends Component {
                         <GpoNodeData visible={this.state.gpoVisible} />
                         <OuNodeData visible={this.state.ouVisible} />
                         <CloudNICNodeData visible={this.state.cloudNICVisible} />
+                        <CloudNSGNodeData visible={this.state.cloudNSGVisible} />
+                        <CloudVMNodeData visible={this.state.cloudVMVisible} />
+                        <CloudHDNodeData visible={this.state.cloudHDVisible} />
+                        <CloudKeyVaultNodeData visible={this.state.cloudKeyVaultVisible} />
+                        {/* TODO: add (RG, subscription, IP, SP, APP, ) */}
+                        <CloudRGNodeData visible={this.state.cloudRGVisible} />
+                        <CloudSubscriptionNodeData visible={this.state.cloudSubscriptionVisible} />
+                        <CloudSPNodeData visible={this.state.cloudSPVisible} />
+                        <CloudAppNodeData visible={this.state.cloudAppVisible} />
+                        <CloudRoleNodeData visible={this.state.cloudRoleVisible} />
                     </Tab>
 
                     <Tab eventKey={3} title='Queries'>

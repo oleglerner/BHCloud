@@ -13,6 +13,7 @@ import { streamArray } from 'stream-json/streamers/StreamArray';
 import { Parse } from 'unzipper';
 import * as OldIngestion from '../../js/oldingestion.js';
 import * as NewIngestion from '../../js/newingestion.js';
+import * as CloudIngestion from '../../js/cloudingestion.js';
 import MenuButton from './MenuButton';
 import ProgressBarMenuButton from './ProgressBarMenuButton';
 const { dialog, app } = remote;
@@ -225,8 +226,8 @@ class MenuContainer extends Component {
             'computers',
             'users',
             'domains',
-            'CloudNICs'
         ];
+        acceptableTypes = acceptableTypes.concat(CloudIngestion.acceptableType);
         let count;
 
         this.setState({
@@ -252,7 +253,6 @@ class MenuContainer extends Component {
             }catch (e){
                 version = null;
             }
-            
 
             if (!acceptableTypes.includes(type)) {
                 this.props.alert.error('Unrecognized File');
@@ -344,8 +344,8 @@ class MenuContainer extends Component {
                 domains: NewIngestion.buildDomainJsonNew,
                 ous: NewIngestion.buildOuJsonNew,
                 gpos: NewIngestion.buildGpoJsonNew,
-                CloudNICs: NewIngestion.buildCloudNICJson,
             };
+            funcMap = {...funcMap, ...CloudIngestion.cloudFuncMap};
         }
 
         let data = funcMap[type](chunk);
