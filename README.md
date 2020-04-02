@@ -6,19 +6,19 @@
   - AzureAD : Install-Module -Name "AzureAD"
 
 # Clone repository
-mkdir BHCloud
-git clone https://
+- mkdir BHCloud
+- git clone https://
 
 # build
-cd BHcloud
-npm install
-npm run [winbuild | linuxbuild ]
+- cd BHcloud
+- npm install
+- npm run [winbuild | linuxbuild ]
 
 # run ingestor
 Open Powershell
 
-. .\BHCloud\Ingestors\CloudHound.ps1
-Main -tenants @("","") -path C:\temp
+- . .\BHCloud\Ingestors\CloudHound.ps1
+- Main -tenants @("","") -path C:\temp
 
 
 # Downloading BloodHound Binaries
