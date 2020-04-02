@@ -1,3 +1,26 @@
+# dependenices
+- Neo4j
+- npm
+- powershell modules (for ingestor):
+  - az cli : https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest
+  - AzureAD : Install-Module -Name "AzureAD"
+
+# Clone repository
+mkdir BHCloud
+git clone https://
+
+# build
+cd BHcloud
+npm install
+npm run [winbuild | linuxbuild ]
+
+# run ingestor
+Open Powershell
+
+. .\BHCloud\Ingestors\CloudHound.ps1
+Main -tenants @("","") -path C:\temp
+
+
 # Downloading BloodHound Binaries
 Pre-Compiled BloodHound binaries can be found [here](https://github.com/BloodHoundAD/BloodHound/releases). 
 
